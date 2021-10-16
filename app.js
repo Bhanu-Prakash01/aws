@@ -8,6 +8,8 @@ app.get('/',(req,res)=>{
 })
 
 
-app.listen(process.env.port || 8000,()=>{
-    console.log('server is running')
+const p=process.env.PORT || 8000
+
+app.listen(p,()=>{
+    console.log(`server is running ${p}`)
 })
