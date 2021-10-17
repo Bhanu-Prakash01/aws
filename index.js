@@ -13,7 +13,7 @@ const players=require('./routes/tournaments/players')
 
 //middlewares
 server.use(express.json())
-server.use(helmet());
+
 server.use(cors())
 
 mongoose.connect('mongodb+srv://myfirstbackend:D0TrlgRH2yIfYcF6@cluster0.iuv7w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
@@ -39,7 +39,7 @@ server.use('/images', express.static('images'))
 server.use('/tournament',all_tournaments)
 server.use('/players',players)
 
-const p =process.env.PORT || 8000
+const p =process.env.port || process.env.PORT || 8000
 
 server.listen(p,()=>{
     console.log('server is running')
