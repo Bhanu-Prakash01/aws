@@ -39,8 +39,8 @@ server.use('/images', express.static('images'))
 server.use('/tournament',all_tournaments)
 server.use('/players',players)
 
-const p =process.env.port || process.env.PORT || 8000
+const p =process.env.port || process.env.PORT 
 
 server.listen(p,()=>{
-    console.log('server is running')
+    console.log(`server is running ${p}`)
 })
