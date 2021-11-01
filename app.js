@@ -16,7 +16,7 @@ server.use(express.json())
 server.use(helmet());
 server.use(cors())
 
-mongoose.connect("mongodb+srv://myfirstbackend:D0TrlgRH2yIfYcF6@cluster0.iuv7w.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGODB_URI_TOURNAMENTS)
     .then(()=>{
         console.log("database is connected")
     })

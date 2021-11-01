@@ -3,6 +3,7 @@ const router=express.Router();
 const Player=require('../../models/tournaments/players')
 const bcrypt=require('bcrypt')
 const Tournaments=require('../../models/tournaments/tournaments');
+const msg = require('../../models/tournaments/msg');
 
 router.post('/post', async (req,res)=>{
     console.log(req.body)
@@ -64,8 +65,12 @@ router.post('/login', async (req,res)=>{
 
 router.post('/money/update', async (req,res)=>{
     const {id,money}=req.body
-    const updating_the_user= await Player.findOneAndUpdate({game:id},{
-        money:money,
+    c
+    const money_d=await Player.findOne({id:id})
+
+    const m_d=money_d.money
+    const updating_the_user= await Player.findOneAndUpdate({id:id},{
+        money: m_d + parseInt(money),
         matchPlayed: 0,
         totalkills:0
     })
@@ -73,6 +78,31 @@ router.post('/money/update', async (req,res)=>{
     res.status(200).send('ok')
 
 })
+
+router.post('/money/withdraw', async (req,res)=>{
+    const {id,money,upi}=req.body
+    const money_d=await Player.findOne({id:id})
+
+    const m_d=money_d.money
+
+    const updating_the_user= await Player.findOneAndUpdate({id:id},{
+        money:m_d - money,
+        matchPlayed: 0,
+        totalkills:0
+    })
+
+    
+    const request_money= await msg({
+        userid:id,
+        money:money,
+        upi:upi
+    })
+
+    await request_money.save()
+    res.status(200).send('ok')
+
+})
+
 
 router.put('/update', async (req,res)=>{
     const {name,matchplayed,totalkills}=req.body
@@ -85,8 +115,22 @@ router.put('/update', async (req,res)=>{
 
 })
 
+router.post('/reg_test',async (req,res)=>{
+    const {name,id}=req.body
 
-router.put('/registration', async (req,res)=>{
+    const user_match= await Tournaments.findOne({$and:[{id:id},{players:name}]})
+
+    if(user_match == null){
+       res.status(200).send()
+    }
+
+    else{
+        console.log(user_match)
+        res.status(400).send()
+    }
+})
+
+router.post('/registration', async (req,res)=>{
     const {name,id}=req.body
 
     const user_match= await Tournaments.findOne({$and:[{id:id},{players:name}]})
@@ -106,7 +150,7 @@ router.put('/registration', async (req,res)=>{
     }
     else{
         console.log(user_match)
-        res.status(404).send('you are already here')
+        res.status(400).send('you are already here')
     }
 
     
