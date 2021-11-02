@@ -1,7 +1,6 @@
 const express=require('express');
 const router=express.Router();
 const Player=require('../../models/tournaments/players')
-const bcrypt=require('bcrypt')
 const Tournaments=require('../../models/tournaments/tournaments');
 const msg = require('../../models/tournaments/msg');
 
@@ -15,7 +14,7 @@ router.post('/post', async (req,res)=>{
             const data= await Player({
                 id: await Player.find().count()+1,
                 name:name,
-                password: await bcrypt.hash(password, 10),
+                password: password,
                 number:number
             })
         
@@ -47,8 +46,7 @@ router.post('/login', async (req,res)=>{
     const {name,password}=req.body
     try{
         const searching_user_password= await Player.findOne({name:name})
-        const d= await bcrypt.compare(password,searching_user_password.password)
-        if(d){
+        if(password == searching_user_password.password){
             const {id}=searching_user_password
             res.send(`${id}`)
         }
