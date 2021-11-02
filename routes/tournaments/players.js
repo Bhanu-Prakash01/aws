@@ -46,7 +46,7 @@ router.post('/login', async (req,res)=>{
     const {name,password}=req.body
     try{
         const searching_user_password= await Player.findOne({name:name})
-        if(password == searching_user_password.password){
+        if(password == searching_user_password.password.toString()){
             const {id}=searching_user_password
             res.send(`${id}`)
         }
