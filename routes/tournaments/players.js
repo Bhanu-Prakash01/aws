@@ -3,6 +3,7 @@ const router=express.Router();
 const Player=require('../../models/tournaments/players')
 const Tournaments=require('../../models/tournaments/tournaments');
 const msg = require('../../models/tournaments/msg');
+const players = require('../../models/tournaments/players');
 
 router.post('/post', async (req,res)=>{
     console.log(req.body)
@@ -63,7 +64,7 @@ router.post('/login', async (req,res)=>{
 
 router.post('/money/update', async (req,res)=>{
     const {id,money}=req.body
-    c
+    
     const money_d=await Player.findOne({id:id})
 
     const m_d=money_d.money
@@ -129,25 +130,39 @@ router.post('/reg_test',async (req,res)=>{
 })
 
 router.post('/registration', async (req,res)=>{
-    const {name,id}=req.body
+    const {name,id,reg_id,money}=req.body
 
-    const user_match= await Tournaments.findOne({$and:[{id:id},{players:name}]})
+    const user_match= await Tournaments.findOne({$and:[{id:id},{players:{$elemMatch:{name : name}}}]})
 
     if(user_match == null){
         await Tournaments.updateOne(
             {id:id},
             {
                 $push: {
-                    players:[name]
+                    players:[
+                        {
+                            registered_id:reg_id,
+                            name:name
+                        }
+                    ]
                 }
                 
             }
         )
 
-        res.send(user_match)
+        const o_money= await players.findOne({id:reg_id})
+        const after_money = o_money.money - money
+
+        const money_died_players= await players.findOneAndUpdate({id:reg_id},{
+            money: after_money
+        })
+
+        await money_died_players.save()
+
+        res.send('added')
     }
     else{
-        console.log(user_match)
+        // console.log(user_match)
         res.status(400).send('you are already here')
     }
 

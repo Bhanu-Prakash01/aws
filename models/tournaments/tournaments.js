@@ -23,10 +23,19 @@ const TournamentsSchema=new mongoose.Schema({
     mode:{
         type:String
     },
-    players:{
-        type:Array
+    players:[
+        {
+            registered_id:{
+                type:Number
+            },
+            name:{
+                type:String
+            }
+        }
+    ],
+    password:{
+        type:Number
     },
-    
     date:{
         type:Date,
         default:Date.now()

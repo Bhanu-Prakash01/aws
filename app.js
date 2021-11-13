@@ -16,7 +16,7 @@ server.use(express.json())
 server.use(helmet());
 server.use(cors())
 
-mongoose.connect(process.env.MONGODB_URI_TOURNAMENTS)
+mongoose.connect('mongodb://18.221.68.213:27017')
     .then(()=>{
         console.log("database is connected")
     })

@@ -25,6 +25,16 @@ const PlayersSchema=new mongoose.Schema({
         type:Number,
         default:0
     },
+    notifications:[
+        {
+            room_id:{
+                type:String
+            },
+            password:{
+                type:String
+            }
+        }
+    ],
     date:{
         type:Date,
         default:Date.now()
