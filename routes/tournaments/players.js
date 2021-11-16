@@ -83,22 +83,26 @@ router.post('/money/withdraw', async (req,res)=>{
     const money_d=await Player.findOne({id:id})
 
     const m_d=money_d.money
+    if(m_d >= money){
 
-    const updating_the_user= await Player.findOneAndUpdate({id:id},{
-        money:m_d - money,
-        matchPlayed: 0,
-        totalkills:0
-    })
+        const updating_the_user= await Player.findOneAndUpdate({id:id},{
+            money:m_d - money,
+            matchPlayed: 0,
+            totalkills:0
+        })
 
-    
-    const request_money= await msg({
-        userid:id,
-        money:money,
-        upi:upi
-    })
+        
+        const request_money= await msg({
+            userid:id,
+            money:money,
+            upi:upi
+        })
 
-    await request_money.save()
-    res.status(200).send('ok')
+        await request_money.save()
+        res.status(200).send('ok')
+    }else{
+        res.status(400).send('low balance')
+    }
 
 })
 
