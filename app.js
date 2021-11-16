@@ -44,6 +44,6 @@ server.use('/tournament',all_tournaments)
 server.use('/players',players)
 
 
-server.listen(process.env.PORT,()=>{
+server.listen(8000,()=>{
     console.log('server is running')
 })
