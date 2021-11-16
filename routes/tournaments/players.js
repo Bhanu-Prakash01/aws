@@ -131,6 +131,10 @@ router.post('/reg_test',async (req,res)=>{
 
 router.post('/registration', async (req,res)=>{
     const {name,id,reg_id,money}=req.body
+    
+    const player_ess= await players.findOne({id:reg_id})
+    const player_money= player_ess.money
+    if(player_money >= money){
 
     const user_match= await Tournaments.findOne({$and:[{id:id},{players:{$elemMatch:{name : name}}}]})
 
@@ -166,7 +170,10 @@ router.post('/registration', async (req,res)=>{
         res.status(400).send('you are already here')
     }
 
-    
+    }
+    else{
+        res.status(400).send('low balance')
+    }
     
 })
 

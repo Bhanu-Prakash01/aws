@@ -43,6 +43,9 @@ const TournamentsSchema=new mongoose.Schema({
     over:{
         type: Boolean,
         default: false
+    },
+    image:{
+        type:String
     }
 })
 

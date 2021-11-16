@@ -4,6 +4,7 @@ const mongoose=require('mongoose')
 const helmet=require('helmet')
 require('dotenv').config();
 const cors=require('cors')
+const compression=require('compression')
 
 //importing files
 //tournaments
@@ -15,6 +16,9 @@ const players=require('./routes/tournaments/players')
 server.use(express.json())
 server.use(helmet());
 server.use(cors())
+server.use(compression({
+    level:9
+}))
 
 mongoose.connect('mongodb://18.221.68.213:27017')
     .then(()=>{
