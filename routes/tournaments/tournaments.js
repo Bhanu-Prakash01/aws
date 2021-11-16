@@ -31,10 +31,10 @@ router.get('/graphdata',async (req,res)=>{
 router.get('/over/:id',async (req,res)=>{
     const game_id= req.params.id
 
-    const {players,id}= await Tournaments.findOne({_id:game_id})
+    const {players,id}= await Tournaments.findOne({id:game_id})
     const match_calc = players.length  
 
-    const updateing_dat= await Tournaments.findOneAndUpdate({_id:game_id},{
+    const updateing_dat= await Tournaments.findOneAndUpdate({id:game_id},{
         over:true
     })
 

@@ -138,41 +138,44 @@ router.post('/registration', async (req,res)=>{
     
     const player_ess= await players.findOne({id:reg_id})
     const player_money= player_ess.money
+    // const user_match= await Tournaments.findOne({$and:[{id:id},{players:{$elemMatch:{name:name}}}]})
+
+    // res.send(user_match)
     if(player_money >= money){
 
-    const user_match= await Tournaments.findOne({$and:[{id:id},{players:{$elemMatch:{name : name}}}]})
+        const user_match= await Tournaments.findOne({$and:[{id:id},{players:{$elemMatch:{name:name}}}]})
 
-    if(user_match == null){
-        await Tournaments.updateOne(
-            {id:id},
-            {
-                $push: {
-                    players:[
-                        {
-                            registered_id:reg_id,
-                            name:name
-                        }
-                    ]
+        if(user_match == null){
+            await Tournaments.updateOne(
+                {id:id},
+                {
+                    $push: {
+                        players:[
+                            {
+                                registered_id:reg_id,
+                                name:name
+                            }
+                        ]
+                    }
+                    
                 }
-                
-            }
-        )
+            )
 
-        const o_money= await players.findOne({id:reg_id})
-        const after_money = o_money.money - money
+            const o_money= await players.findOne({id:reg_id})
+            const after_money = o_money.money - money
 
-        const money_died_players= await players.findOneAndUpdate({id:reg_id},{
-            money: after_money
-        })
+            const money_died_players= await players.findOneAndUpdate({id:reg_id},{
+                money: after_money
+            })
 
-        await money_died_players.save()
+            await money_died_players.save()
 
-        res.send('added')
-    }
-    else{
-        // console.log(user_match)
-        res.status(400).send('you are already here')
-    }
+            res.send('user is added')
+        }
+        else{
+            // console.log(user_match)
+            res.status(400).send('you are already here')
+        }
 
     }
     else{
