@@ -20,6 +20,9 @@ const TournamentsSchema=new mongoose.Schema({
     map:{
         type:String
     },
+    total:{
+        type:Number
+    },
     mode:{
         type:String
     },
