@@ -5,7 +5,7 @@ const Players = require('../../models/tournaments/players');
 const Graph = require('../../models/tournaments/garph')
 
 router.post('/post', async (req,res)=>{
-    const {map,id,per_kill,entry_fee,mode,game,time,img}= req.body
+    const {map,id,per_kill,entry_fee,mode,game,time,img,total}= req.body
     const data= new Tournaments({
         id:await Tournaments.find().count()+1,
         entry_fee:entry_fee,
@@ -14,7 +14,8 @@ router.post('/post', async (req,res)=>{
         mode: mode,
         game:game,
         time:time,
-        image:img
+        image:img,
+        total:total
     })
 
     await data.save()
