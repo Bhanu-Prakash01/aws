@@ -38,8 +38,13 @@ router.get('/get', async (req,res)=>{
 })
 
 router.get('/get/:id', async (req,res)=>{
-    const player_details= await Player.findOne({id:req.params.id})
-    res.send(player_details)
+    try{
+        const player_details= await Player.findOne({id:req.params.id})
+        res.send(player_details)
+    }catch{
+        res.status(400).send()
+    }
+    
  })
 
 router.post('/login', async (req,res)=>{
