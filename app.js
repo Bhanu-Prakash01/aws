@@ -25,11 +25,11 @@ mongoose.connect('mongodb://18.221.68.213:27017')
         console.log("database is connected")
     })
     .catch((e)=>{
-        console.log(`${e}`)
+        console.log('connection err')
     })
 
 server.get('/',(req,res)=>{
-    res.send("server is running 1")
+    res.send("server is running")
 })
 
 server.use(express.static('public'));  
